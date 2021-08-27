@@ -1,11 +1,14 @@
 // run `node index.js` in the terminal
-const httpServer = require('http').createServer();
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
-const io = require('socket.io');
+const httpServer = createServer();
 
-console.log(`Hello Node.js v${process.versions.node}!`);
+const io = new Server(httpServer, {});
 
-const app = io(httpServer, {});
-
+io.on('connect', socket => {
+  console.log(`New connection from ${socket.id}`);
+  console.log(socket.data);
+});
 
 httpServer.listen(3000);
